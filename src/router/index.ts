@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home,
   },
@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
-    path: "/inventory",
+    path: "/",
     name: "Inventory",
     component: () =>
       import(/* webpackChunkName: "inventory" */ "../views/InventoryView.vue"),

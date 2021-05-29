@@ -7,7 +7,7 @@
             <v-text-field label="Search item" v-model="text"></v-text-field>
           </v-col>
           <v-col cols="1">
-            <v-btn icon @click="addItem()">
+            <v-btn icon @click="addItem(text)">
               <v-icon large>add_circle_outline</v-icon>
             </v-btn>
           </v-col>
@@ -53,6 +53,9 @@
         </v-container>
       </v-col>
       <v-col cols="12">
+        <v-divider></v-divider>
+      </v-col>
+      <v-col cols="12">
         <pre>{{ exportItems }}</pre>
       </v-col>
     </v-row>
@@ -89,15 +92,15 @@ export default Vue.extend({
         return item.name.toLowerCase().includes(this.text.toLowerCase());
       };
     },
-    addItem() {
-      console.log(`addItem ${this.text}`);
+    addItem(text: string) {
+      console.log(`addItem ${text}`);
       const index = this.getItems().findIndex(
-        (item) => item.name.toLowerCase() === this.text.toLowerCase()
+        (item) => item.name.toLowerCase() === text.toLowerCase()
       );
       if (index !== -1) {
-        throw Error(`Duplicate item: ${this.text}`);
+        throw Error(`Duplicate item: ${text}`);
       }
-      this.$store.commit("addItem", new InventoryItem(this.text));
+      this.$store.commit("addItem", new InventoryItem(text));
     },
     incrementQuantity(itemName: string) {
       console.log(`updateItem ${itemName}, +1`);
@@ -129,13 +132,20 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.$store.commit("addItem", new InventoryItem("Sacchi di patate"));
-    this.$store.commit("addItem", new InventoryItem("Pane"));
-    this.$store.commit("addItem", new InventoryItem("Carote"));
-    this.$store.commit(
-      "addItem",
-      new InventoryItem("Barbabietola da zucchero")
-    );
+    const initialValues = [
+      "Sacchi di patate",
+      "Pane",
+      "Carote",
+      "Mango",
+      "Fragole",
+    ];
+    initialValues.forEach((value) => {
+      try {
+        this.addItem(value);
+      } catch (e) {
+        console.log(`Duplicate element, ${value}`);
+      }
+    });
   },
 });
 </script>
