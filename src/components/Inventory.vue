@@ -4,12 +4,19 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="10">
-            <v-text-field label="Search/Add item" v-model="text"></v-text-field>
+            <v-text-field
+              label="Cerca/aggiungi elementi"
+              v-model="text"
+            ></v-text-field>
           </v-col>
           <v-col cols="2">
-            <v-btn icon @click="addItem(text)">
+            <v-btn icon @click="addItem(text)" :disabled="!enableAddItem">
               <v-icon large>add_circle_outline</v-icon>
             </v-btn>
+            <reset-inventory
+              message="Stai per ripristinare gli elementi ai valori di default, vuoi proseguire?"
+              @accept="resetInventory"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -64,24 +71,36 @@
 
 <script lang="ts">
 import Vue from "vue";
+import ResetInventory from "@/components/ResetInventory.vue";
 import { InventoryItem } from "@/models/InventoryItem";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
 
 export default Vue.extend({
   name: "Inventory",
-
+  components: { ResetInventory },
   data: () => ({
     text: "",
   }),
   computed: {
     items(): InventoryItem[] {
-      return (this.$store.state.items as InventoryItem[]).filter(
-        this.searchFilter()
-      );
+      return (this.$store.state.items as InventoryItem[])
+        .filter(this.searchFilter())
+        .sort((a, b) => (a.name >= b.name ? 1 : -1));
     },
     exportItems() {
       const items = this.$store.state.items as InventoryItem[];
       return items.map((item) => `${item.name}\t${item.quantity}`).join("\n");
+    },
+    enableAddItem() {
+      if (this.text.trim() === "") {
+        return false;
+      }
+      const items = this.$store.state.items as InventoryItem[];
+      return (
+        items.findIndex(
+          (item) => item.name.toLowerCase() === this.text.toLowerCase()
+        ) === -1
+      );
     },
   },
   methods: {
@@ -130,6 +149,12 @@ export default Vue.extend({
     },
     getItems(): InventoryItem[] {
       return this.$store.state.items as InventoryItem[];
+    },
+    resetInventory(): void {
+      console.log("Reset items to default values");
+      inventoryPersistence.persist(null);
+      const values = inventoryPersistence.retrieve();
+      this.$store.commit("setItems", values);
     },
   },
   mounted() {

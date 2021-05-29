@@ -24,6 +24,7 @@ export default new Vuex.Store({
       }
     },
     setItems(state, items: InventoryItem[]) {
+      state.items.splice(0);
       items.forEach((item) => state.items.push(item));
     },
   },
