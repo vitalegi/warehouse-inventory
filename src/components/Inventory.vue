@@ -3,10 +3,10 @@
     <v-row>
       <v-col cols="12">
         <v-row>
-          <v-col cols="9">
-            <v-text-field label="Search item" v-model="text"></v-text-field>
+          <v-col cols="10">
+            <v-text-field label="Search/Add item" v-model="text"></v-text-field>
           </v-col>
-          <v-col cols="1">
+          <v-col cols="2">
             <v-btn icon @click="addItem(text)">
               <v-icon large>add_circle_outline</v-icon>
             </v-btn>
@@ -65,6 +65,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { InventoryItem } from "@/models/InventoryItem";
+import inventoryPersistence from "@/services/InventoryPersistenceService";
 
 export default Vue.extend({
   name: "Inventory",
@@ -132,20 +133,10 @@ export default Vue.extend({
     },
   },
   mounted() {
-    const initialValues = [
-      "Sacchi di patate",
-      "Pane",
-      "Carote",
-      "Mango",
-      "Fragole",
-    ];
-    initialValues.forEach((value) => {
-      try {
-        this.addItem(value);
-      } catch (e) {
-        console.log(`Duplicate element, ${value}`);
-      }
-    });
+    const values = inventoryPersistence.retrieve();
+    if (this.getItems().length == 0) {
+      this.$store.commit("setItems", values);
+    }
   },
 });
 </script>
