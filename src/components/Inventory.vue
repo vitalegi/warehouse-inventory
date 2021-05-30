@@ -26,38 +26,7 @@
         xl="3"
         cols="12"
       >
-        <v-card>
-          <v-card-title>
-            {{ item.name }}
-            <v-spacer></v-spacer>
-            <confirmation-dialog
-              title="Attenzione"
-              :message="`Sei sicuro di voler eliminare '${item.name}'?`"
-              @accept="deleteItem(item.name)"
-              color="secondary"
-              icon="mdi-close"
-              :largeIcon="false"
-            />
-          </v-card-title>
-          <v-card-actions>
-            <v-container>
-              <v-row>
-                <v-col> </v-col>
-                <v-col>
-                  <strong>{{ item.quantity }}</strong>
-                </v-col>
-                <v-col align="right">
-                  <v-btn icon @click="incrementQuantity(item.name, -1)">
-                    <v-icon>remove_circle_outline</v-icon>
-                  </v-btn>
-                  <v-btn icon @click="incrementQuantity(item.name, +1)">
-                    <v-icon>add_circle_outline</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-actions>
-        </v-card>
+        <item-card :item="item" />
       </v-col>
     </v-row>
     <v-row>
@@ -71,13 +40,13 @@
 <script lang="ts">
 import Vue from "vue";
 import SummaryInventory from "@/components/SummaryInventory.vue";
-import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import ItemCard from "@/components/ItemCard.vue";
 import { InventoryItem } from "@/models/InventoryItem";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
 
 export default Vue.extend({
   name: "Inventory",
-  components: { SummaryInventory, ConfirmationDialog },
+  components: { SummaryInventory, ItemCard },
   data: () => ({
     text: "",
   }),
@@ -86,10 +55,6 @@ export default Vue.extend({
       return (this.$store.state.items as InventoryItem[])
         .filter(this.searchFilter())
         .sort((a, b) => (a.name >= b.name ? 1 : -1));
-    },
-    exportItems() {
-      const items = this.$store.state.items as InventoryItem[];
-      return items.map((item) => `${item.name}\t${item.quantity}`).join("\n");
     },
     enableAddItem() {
       if (this.text.trim() === "") {
@@ -121,31 +86,6 @@ export default Vue.extend({
         throw Error(`Duplicate item: ${text}`);
       }
       this.$store.commit("addItem", new InventoryItem(text));
-    },
-    deleteItem(text: string) {
-      console.log(`deleteItem ${text}`);
-      const item = this.getItems().find((item) => item.name === text);
-      if (item) {
-        this.$store.commit("deleteItem", new InventoryItem(text));
-      }
-    },
-    incrementQuantity(itemName: string, increment: number) {
-      console.log(`updateItem ${itemName}, ${increment}`);
-      this.$store.commit(
-        "updateItem",
-        new InventoryItem(itemName, this.itemQuantity(itemName) + increment)
-      );
-    },
-    itemQuantity(itemName: string) {
-      const element = this.findItem(itemName);
-      if (element) {
-        return element.quantity;
-      } else {
-        throw Error(`item ${itemName} not found`);
-      }
-    },
-    findItem(itemName: string): InventoryItem | undefined {
-      return this.getItems().find((curr) => curr.name === itemName);
     },
     getItems(): InventoryItem[] {
       return this.$store.state.items as InventoryItem[];
