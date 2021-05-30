@@ -10,7 +10,7 @@
     <v-card-text>
       <v-expand-transition>
         <v-container v-show="show">
-          <v-row>
+          <v-row dense>
             <v-col
               v-for="(item, id2) in groupItems"
               :key="id2"
@@ -59,7 +59,13 @@ export default Vue.extend({
         if (this.search.trim() === "") {
           return true;
         }
-        return item.name.toLowerCase().includes(this.search.toLowerCase());
+        if (item.name.toLowerCase().includes(this.search.toLowerCase())) {
+          return true;
+        }
+        if (item.group.toLowerCase().includes(this.search.toLowerCase())) {
+          return true;
+        }
+        return false;
       };
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row dense>
+    <v-row>
       <v-col cols="12">
         <v-text-field label="Cerca/aggiungi elementi" v-model="text">
           <v-btn
@@ -68,7 +68,13 @@ export default Vue.extend({
         if (this.text.trim() === "") {
           return true;
         }
-        return item.name.toLowerCase().includes(this.text.toLowerCase());
+        if (item.name.toLowerCase().includes(this.text.toLowerCase())) {
+          return true;
+        }
+        if (item.group.toLowerCase().includes(this.text.toLowerCase())) {
+          return true;
+        }
+        return false;
       };
     },
     addItem(text: string) {
