@@ -16,17 +16,8 @@
           </v-btn>
         </v-text-field>
       </v-col>
-      <v-col
-        v-for="(item, id) in items"
-        :key="id"
-        xs="12"
-        sm="12"
-        md="6"
-        lg="4"
-        xl="3"
-        cols="12"
-      >
-        <item-card :item="item" />
+      <v-col cols="12" v-for="(group, groupId) in groups" :key="groupId">
+        <item-group :group="group" :search="text" />
       </v-col>
     </v-row>
     <v-row>
@@ -40,13 +31,13 @@
 <script lang="ts">
 import Vue from "vue";
 import SummaryInventory from "@/components/SummaryInventory.vue";
-import ItemCard from "@/components/ItemCard.vue";
+import ItemGroup from "@/components/ItemGroup.vue";
 import { InventoryItem } from "@/models/InventoryItem";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
 
 export default Vue.extend({
   name: "Inventory",
-  components: { SummaryInventory, ItemCard },
+  components: { SummaryInventory, ItemGroup },
   data: () => ({
     text: "",
   }),
@@ -66,6 +57,9 @@ export default Vue.extend({
           (item) => item.name.toLowerCase() === this.text.toLowerCase()
         ) === -1
       );
+    },
+    groups(): string[] {
+      return [...new Set(this.items.map((item) => item.group))];
     },
   },
   methods: {
