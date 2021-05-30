@@ -12,7 +12,7 @@
       />
     </v-card-title>
     <v-card-text>
-      <pre>{{ exportableItems }}</pre>
+      <pre>{{ formatItems() }}</pre>
     </v-card-text>
   </v-card>
 </template>
@@ -27,11 +27,6 @@ export default Vue.extend({
   name: "SummaryInventory",
   components: { ResetInventory },
   data: () => ({}),
-  computed: {
-    exportableItems() {
-      return this.formatItems();
-    },
-  },
   methods: {
     canShare(): boolean {
       return !!navigator.share;
