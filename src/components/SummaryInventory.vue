@@ -1,11 +1,17 @@
 <template>
   <v-card>
     <v-card-title>
-      Inventario
+      Sommario
       <v-spacer></v-spacer>
       <v-btn icon :disabled="!canShare()" @click="share()">
-        <v-icon large>mdi-share-variant</v-icon>
+        <v-icon large color="primary">mdi-share-variant</v-icon>
       </v-btn>
+    </v-card-title>
+    <v-card-text>
+      <pre>{{ formatItems() }}</pre>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
       <confirmation-dialog
         title="Attenzione"
         message="Stai per ripristinare l'inventario ai valori di default, proseguire?"
@@ -14,10 +20,7 @@
         icon="delete_forever"
         :largeIcon="true"
       />
-    </v-card-title>
-    <v-card-text>
-      <pre>{{ formatItems() }}</pre>
-    </v-card-text>
+    </v-card-actions>
   </v-card>
 </template>
 

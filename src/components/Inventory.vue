@@ -9,7 +9,7 @@
             :disabled="!enableAddItem"
             slot="append"
           >
-            <v-icon>add</v-icon>
+            <v-icon color="primary">add</v-icon>
           </v-btn>
           <v-btn icon @click="text = ''" slot="prepend">
             <v-icon>mdi-close</v-icon>
