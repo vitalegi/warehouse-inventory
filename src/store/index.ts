@@ -14,6 +14,11 @@ export default new Vuex.Store({
       state.items.push(item);
       inventoryPersistence.persist(state.items);
     },
+    deleteItem(state, item: InventoryItem) {
+      const index = state.items.findIndex((i) => i.name === item.name);
+      state.items.splice(index, 1);
+      inventoryPersistence.persist(state.items);
+    },
     updateItem(state, item: InventoryItem) {
       const element = state.items.find((curr) => curr.name === item.name);
       if (element) {

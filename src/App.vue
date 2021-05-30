@@ -2,6 +2,12 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <h1 class="d-flex align-center">Inventario</h1>
+      <v-spacer></v-spacer>
+      <nav id="nav">
+        <router-link to="/">Home</router-link>
+        |
+        <router-link to="/about">About</router-link>
+      </nav>
     </v-app-bar>
 
     <v-main>
@@ -36,10 +42,10 @@ export default Vue.extend({
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: white;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
     }
   }
 }
