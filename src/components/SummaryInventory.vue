@@ -6,9 +6,13 @@
       <v-btn icon :disabled="!canShare()" @click="share()">
         <v-icon large>mdi-share-variant</v-icon>
       </v-btn>
-      <reset-inventory
-        message="Stai per ripristinare gli elementi ai valori di default, vuoi proseguire?"
+      <confirmation-dialog
+        title="Attenzione"
+        message="Stai per ripristinare l'inventario ai valori di default, proseguire?"
         @accept="resetInventory"
+        color="red lighten-2"
+        icon="delete_forever"
+        :largeIcon="true"
       />
     </v-card-title>
     <v-card-text>
@@ -20,12 +24,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { InventoryItem } from "@/models/InventoryItem";
-import ResetInventory from "@/components/ResetInventory.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
 
 export default Vue.extend({
   name: "SummaryInventory",
-  components: { ResetInventory },
+  components: { ConfirmationDialog },
   data: () => ({}),
   methods: {
     canShare(): boolean {

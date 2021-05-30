@@ -1,13 +1,13 @@
 <template>
-  <v-dialog v-model="dialog" width="500">
+  <v-dialog v-model="dialog" max-width="500">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn icon color="red lighten-2" dark v-bind="attrs" v-on="on">
-        <v-icon large>delete_forever</v-icon>
+      <v-btn icon :color="color" v-bind="attrs" v-on="on">
+        <v-icon :large="largeIcon">{{ icon }}</v-icon>
       </v-btn>
     </template>
 
     <v-card>
-      <v-card-title> </v-card-title>
+      <v-card-title>{{ title }}</v-card-title>
       <v-card-text>
         {{ message }}
       </v-card-text>
@@ -34,8 +34,8 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "ResetInventory",
-  props: ["message"],
+  name: "ConfirmationDialog",
+  props: ["title", "message", "icon", "color", "largeIcon"],
   data: () => ({
     dialog: false,
   }),

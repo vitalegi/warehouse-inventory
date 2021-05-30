@@ -41,10 +41,11 @@ export default Vue.extend({
   padding: 30px;
 
   a {
-    font-weight: bold;
     color: white;
+    text-decoration: none;
 
     &.router-link-exact-active {
+      font-weight: bold;
       color: white;
     }
   }

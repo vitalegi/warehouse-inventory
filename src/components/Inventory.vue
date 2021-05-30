@@ -30,9 +30,14 @@
                 <v-card-title>
                   {{ item.name }}
                   <v-spacer></v-spacer>
-                  <v-btn icon @click="deleteItem(item.name)">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
+                  <confirmation-dialog
+                    title="Attenzione"
+                    :message="`Sei sicuro di voler eliminare '${item.name}'?`"
+                    @accept="deleteItem(item.name)"
+                    color="secondary"
+                    icon="mdi-close"
+                    :largeIcon="false"
+                  />
                 </v-card-title>
                 <v-card-actions>
                   <v-container>
@@ -67,12 +72,13 @@
 <script lang="ts">
 import Vue from "vue";
 import SummaryInventory from "@/components/SummaryInventory.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import { InventoryItem } from "@/models/InventoryItem";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
 
 export default Vue.extend({
   name: "Inventory",
-  components: { SummaryInventory },
+  components: { SummaryInventory, ConfirmationDialog },
   data: () => ({
     text: "",
   }),
