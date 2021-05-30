@@ -56,7 +56,7 @@ export default Vue.extend({
     },
     formatItems(): string {
       const items = this.$store.state.items as InventoryItem[];
-      return items.map((item) => `${item.name}\t${item.quantity}`).join("\n");
+      return items.map((item) => `${item.name}; ${item.quantity}`).join("\n");
     },
     resetInventory(): void {
       console.log("Reset items to default values");

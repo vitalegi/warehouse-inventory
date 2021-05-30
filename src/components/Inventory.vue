@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row dense>
       <v-col cols="12">
         <v-text-field label="Cerca/aggiungi elementi" v-model="text">
           <v-btn
@@ -16,55 +16,51 @@
           </v-btn>
         </v-text-field>
       </v-col>
-      <v-col cols="12">
-        <v-container fluid>
-          <v-row dense>
-            <v-col
-              v-for="(item, id) in items"
-              :key="id"
-              xs="12"
-              sm="12"
-              md="6"
-              lg="4"
-              xl="3"
-              cols="12"
-            >
-              <v-card>
-                <v-card-title>
-                  {{ item.name }}
-                  <v-spacer></v-spacer>
-                  <confirmation-dialog
-                    title="Attenzione"
-                    :message="`Sei sicuro di voler eliminare '${item.name}'?`"
-                    @accept="deleteItem(item.name)"
-                    color="secondary"
-                    icon="mdi-close"
-                    :largeIcon="false"
-                  />
-                </v-card-title>
-                <v-card-actions>
-                  <v-container>
-                    <v-row>
-                      <v-col>
-                        {{ item.quantity }}
-                      </v-col>
-                      <v-spacer></v-spacer>
-                      <v-col>
-                        <v-btn icon @click="incrementQuantity(item.name, -1)">
-                          <v-icon>remove_circle_outline</v-icon>
-                        </v-btn>
-                        <v-btn icon @click="incrementQuantity(item.name, +1)">
-                          <v-icon>add_circle_outline</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
+      <v-col
+        v-for="(item, id) in items"
+        :key="id"
+        xs="12"
+        sm="12"
+        md="6"
+        lg="4"
+        xl="3"
+        cols="12"
+      >
+        <v-card>
+          <v-card-title>
+            {{ item.name }}
+            <v-spacer></v-spacer>
+            <confirmation-dialog
+              title="Attenzione"
+              :message="`Sei sicuro di voler eliminare '${item.name}'?`"
+              @accept="deleteItem(item.name)"
+              color="secondary"
+              icon="mdi-close"
+              :largeIcon="false"
+            />
+          </v-card-title>
+          <v-card-actions>
+            <v-container>
+              <v-row>
+                <v-col> </v-col>
+                <v-col>
+                  <strong>{{ item.quantity }}</strong>
+                </v-col>
+                <v-col align="right">
+                  <v-btn icon @click="incrementQuantity(item.name, -1)">
+                    <v-icon>remove_circle_outline</v-icon>
+                  </v-btn>
+                  <v-btn icon @click="incrementQuantity(item.name, +1)">
+                    <v-icon>add_circle_outline</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-actions>
+        </v-card>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <summary-inventory />
       </v-col>
@@ -163,3 +159,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss">
+strong {
+  font-weight: bold;
+}
+</style>
