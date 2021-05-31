@@ -29,6 +29,7 @@ import Vue from "vue";
 import { InventoryItem } from "@/models/InventoryItem";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
+import itemService from "@/services/ItemService";
 
 export default Vue.extend({
   name: "SummaryInventory",
@@ -56,7 +57,10 @@ export default Vue.extend({
     },
     formatItems(): string {
       const items = this.$store.state.items as InventoryItem[];
-      return items.map((item) => `${item.name}; ${item.quantity}`).join("\n");
+      return itemService
+        .sort(items)
+        .map((item) => `${item.group};${item.name};${item.quantity}`)
+        .join("\n");
     },
     resetInventory(): void {
       console.log("Reset items to default values");

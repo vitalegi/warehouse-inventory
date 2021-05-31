@@ -2,21 +2,9 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-text-field label="Cerca/aggiungi elementi" v-model="text">
-          <v-btn
-            icon
-            @click="addItem(text)"
-            :disabled="!enableAddItem"
-            slot="append"
-          >
-            <v-icon color="primary">add</v-icon>
-          </v-btn>
-          <v-btn icon @click="text = ''" slot="prepend">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-text-field>
+        <inventory-action-bar @updateSearch="updateSearch" />
       </v-col>
-      <v-col cols="12" v-for="(group, groupId) in groups" :key="groupId">
+      <v-col cols="12" v-for="group in groups" :key="group">
         <item-group :group="group" :search="text" />
       </v-col>
     </v-row>
@@ -32,63 +20,34 @@
 import Vue from "vue";
 import SummaryInventory from "@/components/SummaryInventory.vue";
 import ItemGroup from "@/components/ItemGroup.vue";
+import InventoryActionBar from "@/components/InventoryActionBar.vue";
 import { InventoryItem } from "@/models/InventoryItem";
 import inventoryPersistence from "@/services/InventoryPersistenceService";
+import itemService from "@/services/ItemService";
 
 export default Vue.extend({
   name: "Inventory",
-  components: { SummaryInventory, ItemGroup },
+  components: { SummaryInventory, ItemGroup, InventoryActionBar },
   data: () => ({
     text: "",
   }),
   computed: {
     items(): InventoryItem[] {
-      return (this.$store.state.items as InventoryItem[])
-        .filter(this.searchFilter())
-        .sort((a, b) => (a.name >= b.name ? 1 : -1));
-    },
-    enableAddItem() {
-      if (this.text.trim() === "") {
-        return false;
-      }
-      const items = this.$store.state.items as InventoryItem[];
-      return (
-        items.findIndex(
-          (item) => item.name.toLowerCase() === this.text.toLowerCase()
-        ) === -1
+      return itemService.sortedFilter(
+        this.$store.state.items as InventoryItem[],
+        this.text
       );
     },
     groups(): string[] {
-      return [...new Set(this.items.map((item) => item.group))];
+      return itemService.getGroups(this.items, this.text);
     },
   },
   methods: {
-    searchFilter() {
-      return (item: InventoryItem) => {
-        if (this.text.trim() === "") {
-          return true;
-        }
-        if (item.name.toLowerCase().includes(this.text.toLowerCase())) {
-          return true;
-        }
-        if (item.group.toLowerCase().includes(this.text.toLowerCase())) {
-          return true;
-        }
-        return false;
-      };
-    },
-    addItem(text: string) {
-      console.log(`addItem ${text}`);
-      const index = this.getItems().findIndex(
-        (item) => item.name.toLowerCase() === text.toLowerCase()
-      );
-      if (index !== -1) {
-        throw Error(`Duplicate item: ${text}`);
-      }
-      this.$store.commit("addItem", new InventoryItem(text));
-    },
     getItems(): InventoryItem[] {
       return this.$store.state.items as InventoryItem[];
+    },
+    updateSearch(text: string) {
+      this.text = text;
     },
   },
   mounted() {

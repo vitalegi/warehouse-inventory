@@ -34,6 +34,7 @@
 import Vue from "vue";
 import ItemCard from "@/components/ItemCard.vue";
 import { InventoryItem } from "@/models/InventoryItem";
+import itemService from "@/services/ItemService";
 
 export default Vue.extend({
   name: "ItemGroup",
@@ -44,29 +45,15 @@ export default Vue.extend({
   }),
   computed: {
     groupItems(): InventoryItem[] {
-      return this.getItems()
-        .filter((item) => item.group === this.group)
-        .filter(this.searchFilter())
-        .sort((a, b) => (a.name >= b.name ? 1 : -1));
+      return itemService.sortedFilter(
+        this.getItems().filter((item) => item.group === this.group),
+        this.search
+      );
     },
   },
   methods: {
     getItems(): InventoryItem[] {
       return this.$store.state.items as InventoryItem[];
-    },
-    searchFilter() {
-      return (item: InventoryItem) => {
-        if (this.search.trim() === "") {
-          return true;
-        }
-        if (item.name.toLowerCase().includes(this.search.toLowerCase())) {
-          return true;
-        }
-        if (item.group.toLowerCase().includes(this.search.toLowerCase())) {
-          return true;
-        }
-        return false;
-      };
     },
   },
 });
