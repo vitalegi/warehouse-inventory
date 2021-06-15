@@ -102,9 +102,9 @@ const defaultValues = [
     values: [
       "Pesto alla genovese (pinoli)",
       "Pesto alla siciliana",
-      "Pesto di radicchio (mandorle)",
-      "Pesto di rucola (pinoli)",
-      "Pesto di sedano (noci)",
+      "Pesto radicchio (mandorle)",
+      "Pesto rucola (pinoli)",
+      "Pesto sedano (noci)",
       "Puttanesca",
       "Ragu' di carne",
       "Ragu' di soia",
