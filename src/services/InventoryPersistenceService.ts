@@ -101,7 +101,7 @@ const defaultValues = [
     group: "Sughi",
     values: [
       "Pesto alla genovese (pinoli)",
-      "Pesto alla siciliana ",
+      "Pesto alla siciliana",
       "Pesto di radicchio (mandorle)",
       "Pesto di rucola (pinoli)",
       "Pesto di sedano (noci)",
