@@ -22,6 +22,9 @@ class ItemService {
   }
 
   public sort(items: InventoryItem[]): InventoryItem[] {
+    if (items.length === 0) {
+      return [];
+    }
     return [...items].sort((a, b) => {
       const groupA = a.group.toLowerCase();
       const groupB = b.group.toLowerCase();
