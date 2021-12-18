@@ -119,6 +119,9 @@ const defaultValues = [
   {
     group: "Dolci",
     values: [
+      "Brownies",
+      "Biscotti milano",
+      "Biscotti misti",
       "Crostata di marmellata",
       "Crostata di mele",
       "Crostata olandese",
